@@ -1,16 +1,16 @@
 require_relative '../helper'
 
 class Merk::FormatterTest < MiniTest::Unit::TestCase
-  def test_parser_units
+  def test_formatter_units
     examples.each do |example|
-      assert_parses(example)
+      assert_formats(example)
     end
   end
 
-  def test_parser_files
+  def test_formatter_files
     examples_from_files.each do |example|
       if example[:ast] && example[:html]
-        assert_parses(example)
+        assert_formats(example)
       end
     end
   end
@@ -22,7 +22,7 @@ class Merk::FormatterTest < MiniTest::Unit::TestCase
     formatter.to_html
   end
 
-  def assert_parses(example)
+  def assert_formats(example)
     actual = format(example[:ast])
     line = '-' * 80
     message = [
