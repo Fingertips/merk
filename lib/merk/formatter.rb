@@ -65,7 +65,7 @@ module Merk
     end
 
     def escape(input)
-      input.gsub('<', '&lt;')
+      input.to_s.gsub('<', '&lt;')
     end
   end
 end

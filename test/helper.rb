@@ -70,6 +70,11 @@ class MiniTest::Unit::TestCase
         html: "<ul><li>List item one</li><li>List item two</li></ul>"
       },
       {
+        input: "* Red\r\n* Green\r\n* Blue\r\n\r\n",
+        ast: [{unordered_list: [{list_item: "Red"}, {list_item: "Green"}, {list_item: "Blue"}, {newline: "\n"}]}],
+        html: "<ul><li>Red</li><li>Green</li><li>Blue</li>\n</ul>"
+      },
+      {
         input: "# A Story of two Cities\n\nThey could not win.",
         ast: [{heading: "A Story of two Cities"}, {paragraph: [{c: {c: [{c: "T"}, {c: "h"}, {c: "e"}, {c: "y"}, {c: " "}, {c: "c"}, {c: "o"}, {c: "u"}, {c: "l"}, {c: "d"}, {c: " "}, {c: "n"}, {c: "o"}, {c: "t"}, {c: " "}, {c: "w"}, {c: "i"}, {c: "n"}, {c: "."}]}}]}],
         html: "<h2>A Story of two Cities</h2><p>They could not win.</p>"
