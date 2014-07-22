@@ -18,7 +18,7 @@ module Merk
       newline.repeat(1)
     }
 
-    rule(:heading) { str('#') >> whitespace >> text.as(:heading) }
+    rule(:heading) { str('#') >>  match['^#'] >> whitespace >> text.as(:heading) }
 
     rule(:blockquote) { (quoted_line >> newline).repeat(1) }
     rule(:quoted_line) { str('>') >> space >> text.as(:quoted_line) }

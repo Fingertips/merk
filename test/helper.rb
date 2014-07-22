@@ -45,6 +45,11 @@ class MiniTest::Unit::TestCase
         html: "<p>&lt;i>Escaped&lt;/i></p>"
       },
       {
+        input: "## Café", 
+        ast: [{paragraph: [{c: {c: [{c: "#"}, {c: "#"}, {c: " "}, {c: "C"}, {c: "a"}, {c: "f"}, {c: "é"}]}}]}]  ,
+        html: "<p>## Café</p>"
+      },
+      {
         input: "# Drinking Coffee at a Café",
         ast: [{ heading: 'Drinking Coffee at a Café' }],
         html: "<h2>Drinking Coffee at a Café</h2>"
