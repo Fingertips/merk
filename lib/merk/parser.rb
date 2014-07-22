@@ -63,7 +63,7 @@ module Merk
     private
 
     def cleanup(text)
-      text.gsub(/\A\n+/, '').gsub(/\r\n/, "\n")
+      text.gsub(/\r\n/, "\n").gsub(/\A\n+/, '')
     end
   end
 end
