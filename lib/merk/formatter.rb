@@ -15,10 +15,11 @@ module Merk
     private
 
     def format(ast)
-      if ast.kind_of?(Array)
+      case ast
+      when Array
         format_items(ast)
-      elsif ast.kind_of?(String)
-        escape(ast)
+      when String, Parslet::Slice
+        escape(ast.to_s)
       else
         format_tree(ast)
       end
@@ -51,6 +52,8 @@ module Merk
           out + content_tag('em', format(contents))
         when :codespan
           out + content_tag('code', format(contents))
+        when :c, :inline
+          out + format(contents)
         else
           out + escape(contents.to_s)
         end

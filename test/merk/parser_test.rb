@@ -22,9 +22,13 @@ class Merk::ParserTest < MiniTest::Unit::TestCase
     parser.parse(input)
   end
 
+  def format_ast(input)
+    input.gsub(/:(\w+)=>/, '\1: ').gsub(/@\d+/, '')
+  end
+
   def assert_parses(example)
-    actual = parse(example[:input])
     line = '-' * 80
+    actual = parse(example[:input])
     message = [
       nil,
       line,
@@ -32,9 +36,13 @@ class Merk::ParserTest < MiniTest::Unit::TestCase
       line,
       'AST:',
       actual.inspect,
+      'FORMATTED AST:',
+      format_ast(actual.inspect),
       line,
       nil
     ].join("\n")
     assert_equal(example[:ast], actual, message)
+  rescue Parslet::ParseFailed => failure
+    refute(true, "\n" + '-'*80 + "\n" + example[:input] + "\n" + '-'*80 + "\n" + failure.cause.ascii_tree)
   end
 end

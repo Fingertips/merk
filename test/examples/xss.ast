@@ -1,6 +1,1 @@
-{
-  blockquote: [
-    { quoted_line: 'hello <a name="n"' },
-    { quoted_line: 'href="javascript:alert(\'xss\')">*you*</a>' }
-  ]
-}
+[{blockquote: [{quoted_line: "hello <a name=\"n\""}, {quoted_line: "href=\"javascript:alert('xss')\">*you*</a>"}]}]

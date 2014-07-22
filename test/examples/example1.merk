@@ -1,0 +1,24 @@
+
+## This will not be a header.
+
+| tables |   are   |
+|--------|---------|
+|   not  | allowed |
+
+No ^superscript^. No ~~strikethrough~~.
+
+Horizontal rules don't work.
+
+---------------------------------------
+
+* * *
+
+References [don't work][refid]
+
+[refid]: http://example.com/  "Optional Title Here"
+
+<html> will be escaped
+[markdown links](will-not-work)
+nor will ![images](cat.gif).
+http://example.com/autolinks-dont-work
+emails-dont-work-be-autolinked-either@example.com
