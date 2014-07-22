@@ -6,9 +6,11 @@ class MerkTest < MiniTest::Unit::TestCase
     assert_equal '<p>Merk</p>', Merk.render('Merk')
   end
 
-  def test_fuzz
-    100.times do
-      Merk.render(fuzz)
+  unless $0 == __FILE__
+    def test_fuzz
+      100.times do
+        Merk.render(fuzz)
+      end
     end
   end
 

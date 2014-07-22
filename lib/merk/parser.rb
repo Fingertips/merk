@@ -29,7 +29,10 @@ module Merk
     rule(:unordered_list) {
       (unordered_list_item >> newline).repeat(1) >> newline?
     }
-    rule(:unordered_list_item) { str('*') >> space >> match['^\n\*'].repeat(1).as(:list_item) }
+    rule(:unordered_list_item) {
+      str('*') >> space >> match['^\n\*'].repeat(1).as(:list_item) |
+      str('-') >> space >> match['^\n\-'].repeat(1).as(:list_item)
+    }
 
     rule(:paragraph) {
       (

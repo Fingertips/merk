@@ -60,9 +60,19 @@ class MiniTest::Unit::TestCase
         html: "<h2>Drinking * Coffee * at a Café</h2>"
       },
       {
+        input: "- Wrong list item\n",
+        ast: [{ unordered_list: [{list_item: 'Wrong list item'}] }],
+        html: "<ul><li>Wrong list item</li></ul>"
+      },
+      {
         input: "* List item\n",
         ast: [{ unordered_list: [{list_item: 'List item'}] }],
         html: "<ul><li>List item</li></ul>"
+      },
+      {
+        input: "- Wrong list item one\n- Wrong list item two\n",
+        ast: [{ unordered_list: [{list_item: 'Wrong list item one'}, {list_item: 'Wrong list item two'}] }],
+        html: "<ul><li>Wrong list item one</li><li>Wrong list item two</li></ul>"
       },
       {
         input: "* List item one\n* List item two\n",
