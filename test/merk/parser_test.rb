@@ -1,26 +1,21 @@
-require 'rubygems'
-require 'minitest/autorun'
-
-$:.unshift(File.expand_path('../../../lib', __FILE__))
-
-require 'merk'
+require_relative '../helper'
 
 class Merk::ParserTest < MiniTest::Unit::TestCase
   def test_parser
-    [
-      "\n",
-      "\n\n",
-      'Hi',
-      '# Hi',
-      '# Hi there',
-      '# Hi there *you* person',
-      "* One\n* Two\n",
-      "# Hi\n\nPara"
-    ].each do |input|
-      puts '-' * 80
-      puts input
-      puts '-' * 80
-      puts '>> ' + parse(input).inspect
+    examples.each do |example|
+      actual = parse(example[:input])
+      line = '-' * 80
+      message = [
+        nil,
+        line,
+        'INPUT: ' + example[:input].inspect,
+        line,
+        'AST:',
+        actual.inspect,
+        line,
+        nil
+      ].join("\n")
+      assert_equal(example[:ast], actual, message)
     end
   end
 
@@ -29,7 +24,5 @@ class Merk::ParserTest < MiniTest::Unit::TestCase
   def parse(input)
     parser = Merk::Parser.new
     parser.parse(input)
-  rescue Parslet::ParseFailed => exception
-    puts exception.cause.ascii_tree
   end
 end

@@ -2,41 +2,52 @@ require 'parslet'
 
 module Merk
   class Parser < Parslet::Parser
-    rule(:newline) { match(/\n/) }
-    rule(:newline?) { newline.maybe }
-    rule(:newlines) { newline >> newline }
+    root(:document)
 
-    rule(:hash) { match['#'] }
-    rule(:star) { match['*'] }
-    rule(:space) { match[' '] }
-
-    rule(:char) { match['[:alpha:]'] }
-
-    rule(:literal) { char | space | star | hash }
-
-    rule(:inline) { emphasis.as(:emphasis) | literal.as(:literal) }
-    rule(:inlines) { inline.repeat }
-
-    rule(:literals_without_star) { (char | space | hash).repeat }
-    rule(:emphasis) { star >> literals_without_star.as(:literal) >> star }
-
-    rule(:heading) { hash >> space >> literals.as(:literal) }
-
-    rule(:paragraph) { inlines.as(:inline) }
-
-    rule(:unordered_list_item) { star >> space >> literals_without_star.as(:list_item) >> newline }
-
-    rule(:unordered_list) { unordered_list_item.repeat }
+    rule(:document) {
+      block >> (newline.repeat >> block).repeat |
+      newline.repeat
+    }
 
     rule(:block) {
+      heading |
+      blockquote.as(:blockquote) |
+      codeblock.as(:codeblock) |
       unordered_list.as(:unordered_list) |
-      heading.as(:heading) |
-      paragraph.as(:paragraph)
+      paragraph.as(:paragraph) |
+      newline
     }
-    rule(:blocks) { newlines | block.repeat }
 
-    rule(:document) { newlines | newline | blocks }
+    rule(:heading) { str('#') >> whitespace >> text.as(:heading) }
 
-    root(:document)
+    rule(:blockquote) { (quoted_line >> newline).repeat(1) }
+    rule(:quoted_line) { str('>') >> space >> text.as(:quoted_line) }
+
+    rule(:codeblock) { (codeblock_line >> newline).repeat(1) }
+    rule(:codeblock_line) { space >> space >> text.as(:line) }
+
+    rule(:unordered_list) {
+      (unordered_list_item >> newline).repeat(1)
+    }
+    rule(:unordered_list_item) { str('*') >> space >> match['^\n\*'].repeat(1).as(:list_item) }
+
+    rule(:paragraph) { inline.repeat(1) }
+
+    rule(:inline) {
+      emphasis |
+      codespan |
+      match['^\n\*\`'].repeat(1).as(:literal) |
+      match['\*\`'].as(:literal)
+    }
+
+    rule(:emphasis) { str('*') >> match['^\n\*'].repeat(1).as(:emphasis) >> str('*') }
+    rule(:codespan) { str('`') >> match['^\n\`'].repeat(1).as(:codespan) >> str('`') }
+
+    rule(:text) { match['^\n'].repeat(1) }
+
+    rule(:newline) { match['\n'] }
+
+    rule(:space)  { match["\t "] }
+    rule(:whitespace) { space.repeat }
   end
 end
