@@ -17,7 +17,7 @@ end
 task default: :test
 
 task :test do
-  ruby FileList['test/**/*_test.rb']
+  ruby '-I. -r ' + FileList['test/**/*_test.rb'].join(' -r ') + " -e ''"
 end
 
 desc "Create a distribution directory with all the files needed to run the parser"
