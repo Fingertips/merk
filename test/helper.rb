@@ -105,7 +105,17 @@ class MiniTest::Unit::TestCase
         html: "<p> <em> YOLO </em> </p>"
       },
       {
-        input: "  begin\n    a = 1\n  end\n",
+        input: "  a = 1\n",
+        ast: [{paragraph: [{c: {c: [{c: " "}, {c: " "}, {c: "a"}, {c: " "}, {c: "="}, {c: " "}, {c: "1"}], newline: "\n"}}]}],
+        html: "<p>  a = 1\n</p>"
+      },
+      {
+        input: "\tstupid\n",
+        ast: [{ codeblock: [{line: 'stupid'}] }],
+        html: "<pre><code>stupid</code></pre>"
+      },
+      {
+        input: "    begin\n      a = 1\n    end\n",
         ast: [{ codeblock: [{line: 'begin'}, {line: '  a = 1'}, {line: 'end'}] }],
         html: "<pre><code>begin\n  a = 1\nend</code></pre>"
       },
@@ -120,7 +130,7 @@ class MiniTest::Unit::TestCase
         html: "<blockquote>I love quotes\nI love quotes</blockquote>"
       },
       {
-        input: "Here's some text. Let’s make a list:\n\n\n* Red\n* Green\n* Blue\n\n# This is a section header\n\nThis is paragraph of text *with emphasis* and some `print(\"inline code\")` as well.\n\n> This is a blockquote.\n> And this\n\n  This is a code block.\n",
+        input: "Here's some text. Let’s make a list:\n\n\n* Red\n* Green\n* Blue\n\n# This is a section header\n\nThis is paragraph of text *with emphasis* and some `print(\"inline code\")` as well.\n\n> This is a blockquote.\n> And this\n\n    This is a code block.\n",
         ast: [{paragraph: [{c: {c: [{c: "H"}, {c: "e"}, {c: "r"}, {c: "e"}, {c: "'"}, {c: "s"}, {c: " "}, {c: "s"}, {c: "o"}, {c: "m"}, {c: "e"}, {c: " "}, {c: "t"}, {c: "e"}, {c: "x"}, {c: "t"}, {c: "."}, {c: " "}, {c: "L"}, {c: "e"}, {c: "t"}, {c: "’"}, {c: "s"}, {c: " "}, {c: "m"}, {c: "a"}, {c: "k"}, {c: "e"}, {c: " "}, {c: "a"}, {c: " "}, {c: "l"}, {c: "i"}, {c: "s"}, {c: "t"}, {c: ":"}], newline: "\n"}}]}, {unordered_list: [{list_item: "Red"}, {list_item: "Green"}, {list_item: "Blue"}, {newline: "\n"}]}, {heading: "This is a section header"}, {paragraph: [{c: {c: [{c: "T"}, {c: "h"}, {c: "i"}, {c: "s"}, {c: " "}, {c: "i"}, {c: "s"}, {c: " "}, {c: "p"}, {c: "a"}, {c: "r"}, {c: "a"}, {c: "g"}, {c: "r"}, {c: "a"}, {c: "p"}, {c: "h"}, {c: " "}, {c: "o"}, {c: "f"}, {c: " "}, {c: "t"}, {c: "e"}, {c: "x"}, {c: "t"}, {c: " "}, {emphasis: "with emphasis"}, {c: " "}, {c: "a"}, {c: "n"}, {c: "d"}, {c: " "}, {c: "s"}, {c: "o"}, {c: "m"}, {c: "e"}, {c: " "}, {codespan: "print(\"inline code\")"}, {c: " "}, {c: "a"}, {c: "s"}, {c: " "}, {c: "w"}, {c: "e"}, {c: "l"}, {c: "l"}, {c: "."}], newline: "\n"}}]}, {blockquote: [{quoted_line: "This is a blockquote."}, {quoted_line: "And this"}]}, {codeblock: [{line: "This is a code block."}]}],
         html: "<p>Here's some text. Let’s make a list:\n</p><ul><li>Red</li><li>Green</li><li>Blue</li>\n</ul><h2>This is a section header</h2><p>This is paragraph of text <em>with emphasis</em> and some <code>print(\"inline code\")</code> as well.\n</p><blockquote>This is a blockquote.\nAnd this</blockquote><pre><code>This is a code block.</code></pre>"
       }

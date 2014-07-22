@@ -23,8 +23,9 @@ module Merk
     rule(:blockquote) { (quoted_line >> newline).repeat(1) }
     rule(:quoted_line) { str('>') >> space >> text.as(:quoted_line) }
 
+    rule(:indent) { space.repeat(4,4) | tab }
     rule(:codeblock) { (codeblock_line >> newline).repeat(1) }
-    rule(:codeblock_line) { space >> space >> text.as(:line) }
+    rule(:codeblock_line) { indent >> text.as(:line) }
 
     rule(:unordered_list) {
       (unordered_list_item >> newline).repeat(1) >> newline?
@@ -55,7 +56,8 @@ module Merk
     rule(:newline) { match['\n'] }
     rule(:newline?) { newline.as(:newline) | any.absent? }
 
-    rule(:space)  { match["\t "] }
+    rule(:tab) { match['\t'] }
+    rule(:space) { match[" "] }
     rule(:whitespace) { space.repeat }
 
     def parse(text)
