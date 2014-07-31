@@ -46,7 +46,7 @@ class MiniTest::Unit::TestCase
       },
       {
         input: "## Café", 
-        ast: [{paragraph: [{c: {c: [{c: "#"}, {c: "#"}, {c: " "}, {c: "C"}, {c: "a"}, {c: "f"}, {c: "é"}]}}]}]  ,
+        ast: [{paragraph: [{c: {c: [{c: "#"}, {c: "#"}, {c: " "}, {c: "C"}, {c: "a"}, {c: "f"}, {c: "é"}]}}]}],
         html: "<p>## Café</p>"
       },
       {
@@ -58,6 +58,11 @@ class MiniTest::Unit::TestCase
         input: "# Drinking * Coffee * at a Café",
         ast: [{ heading: 'Drinking * Coffee * at a Café' }],
         html: "<h2>Drinking * Coffee * at a Café</h2>"
+      },
+      {
+        input: "#$ something",
+        ast: [{paragraph: [{c: {c: [{c: "#"}, {c: "$"}, {c: " "}, {c: "s"}, {c: "o"}, {c: "m"}, {c: "e"}, {c: "t"}, {c: "h"}, {c: "i"}, {c: "n"}, {c: "g"}]}}]}],
+        html: "<p>#$ something</p>"
       },
       {
         input: "- Wrong list item\n",
