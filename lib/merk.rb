@@ -6,7 +6,7 @@ module Merk
     @parser || Merk::Parser.new
   end
 
-  def self.render(text)
-    Merk::Formatter.new(parser.parse(text)).to_s
+  def self.render(text, options={})
+    Merk::Formatter.new(parser.parse(text), options).to_s
   end
 end
