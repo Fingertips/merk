@@ -42,7 +42,7 @@ class MiniTest::Unit::TestCase
       {
         input: "<i>Escaped</i>",
         ast: [{paragraph: [{c: {c: [{c: "<"}, {c: "i"}, {c: ">"}, {c: "E"}, {c: "s"}, {c: "c"}, {c: "a"}, {c: "p"}, {c: "e"}, {c: "d"}, {c: "<"}, {c: "/"}, {c: "i"}, {c: ">"}]}}]}],
-        html: "<p>&lt;i>Escaped&lt;/i></p>"
+        html: "<p>&lt;i&gt;Escaped&lt;/i&gt;</p>"
       },
       {
         input: "## Café", 

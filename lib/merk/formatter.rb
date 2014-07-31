@@ -1,3 +1,5 @@
+require 'erb'
+
 module Merk
   class Formatter
     def initialize(ast)
@@ -52,6 +54,8 @@ module Merk
           out + content_tag('em', format(contents))
         when :codespan
           out + content_tag('code', format(contents))
+        when :cloze
+          out + content_tag('span', format(contents), class: %w(cloze))
         when :c, :inline
           out + format(contents)
         else
@@ -60,12 +64,41 @@ module Merk
       end
     end
 
-    def content_tag(tag_name, contents)
-      '<' + tag_name + '>' + contents + '</' + tag_name + '>'
-    end
+    BOOLEAN_ATTRIBUTES = %w(selected autof)
 
     def escape(input)
-      input.to_s.gsub('<', '&lt;')
+      ERB::Util.html_escape(input)
+    end
+    
+    def format_attribute_value(value)
+      if value.kind_of?(Array)
+        value = value.join(' ')
+      end
+      escape(value)
+    end
+
+    def tag_option(name, value)
+      name.to_s + '="' + format_attribute_value(value) + '"'
+    end
+
+    def tag_options(options)
+      attributes = []
+
+      unless options.nil? || options.empty?
+        options.each do |name, value|
+          attributes << tag_option(name, value)
+        end
+      end
+
+      if attributes.empty?
+        ''
+      else
+        ' ' + attributes.join(' ')
+      end
+    end
+
+    def content_tag(tag_name, contents, options=nil)
+      '<' + tag_name + tag_options(options) + '>' + contents + '</' + tag_name + '>'
     end
   end
 end

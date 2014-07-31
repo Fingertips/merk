@@ -50,12 +50,13 @@ module Merk
     rule(:inline) {
       emphasis |
       codespan |
+      cloze |
       char.as(:c)
     }
 
     rule(:emphasis) { str('*') >> emphasis_body.as(:emphasis) >> str('*') }
     rule(:codespan) { str('`') >> match['^\n\`'].repeat(1).as(:codespan) >> str('`') }
-
+    rule(:cloze) { str('[') >> match['^\]'].repeat.as(:cloze) >> str(']') }
     rule(:emphasis_body) { match['^\s\ '] >> match['^\n\*'].repeat(1) }
 
     rule(:char) { match['^\n'] }
