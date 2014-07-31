@@ -6,7 +6,7 @@ module Merk
       @ast = ast
     end
 
-    def to_html
+    def to_s
       if @ast.respond_to?(:each)
         format(@ast)
       else

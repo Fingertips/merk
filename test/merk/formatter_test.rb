@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require_relative '../helper'
 
 class Merk::FormatterTest < MiniTest::Unit::TestCase
@@ -19,7 +21,7 @@ class Merk::FormatterTest < MiniTest::Unit::TestCase
 
   def format(ast)
     formatter = Merk::Formatter.new(ast)
-    formatter.to_html
+    formatter.to_s
   end
 
   def assert_formats(example)

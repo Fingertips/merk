@@ -7,6 +7,6 @@ module Merk
   end
 
   def self.render(text)
-    Merk::Formatter.new(parser.parse(text)).to_html
+    Merk::Formatter.new(parser.parse(text)).to_s
   end
 end
