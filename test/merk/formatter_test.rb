@@ -17,6 +17,13 @@ class Merk::FormatterTest < MiniTest::Unit::TestCase
     end
   end
 
+  def test_formatter_with_base_renderer
+    ast = eval(File.read(File.join(examples_path, 'blockquote.ast')))
+    expected = File.read(File.join(examples_path, 'blockquote.base'))
+    formatter = Merk::Formatter.new(ast, render: Merk::Renderer)
+    assert_equal expected, formatter.to_s
+  end
+
   private
 
   def format(ast)

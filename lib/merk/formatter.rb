@@ -1,7 +1,7 @@
 require 'erb'
 
 module Merk
-  class HTMLRenderer
+  class Renderer
     def initialize(ast, options={})
       @ast = ast
       @options = options
@@ -11,28 +11,50 @@ module Merk
       format(@ast)
     end
 
-    protected
-
-    def format(ast)
+    def format(ast, depth=0)
       case ast
       when String, Parslet::Slice
-        format_literal(ast.to_s)
+        format_literal(ast.to_s, depth)
       when Array
-        format_items(ast)
+        format_items(ast, depth)
       else
-        format_tree(ast)
+        format_tree(ast, depth)
       end
     end
 
-    def format_literal(input)
-      escape(input)
+    def call(name, contents, depth=0)
+      prefix = (' ' * depth)
+      case name
+      when :newline
+        contents.to_s
+      when :literal
+        prefix + contents.to_s
+      else
+        prefix + name.to_s + ":\n" + format(contents, depth + 1)
+      end
     end
 
-    def format_items(list)
-      list.inject('') { |out, item| out + format(item) }
+    def format_literal(input, depth=0)
+      call(:literal, input, depth).to_s
     end
 
-    def format_node(name, contents)
+    def format_items(list, depth=0)
+      list.inject('') { |out, item| out + format(item, depth) }
+    end
+
+    def format_tree(tree, depth=0)
+      tree.inject('') do |out, (name, contents)|
+        out + call(name, contents, depth + 1).to_s
+      end
+    end
+
+    def escape(contents)
+      contents
+    end
+  end
+
+  class HTMLRenderer < Renderer
+    def call(name, contents, depth=0)
       case name
       when :paragraph
         content_tag('p', format(contents))
@@ -56,23 +78,17 @@ module Merk
         content_tag('code', format(contents))
       when :cloze
         content_tag('span', format(contents), class: %w(blank))
-      when :c, :inline
+      when :c
         format(contents)
       else
         escape(contents.to_s)
       end
     end
 
-    def format_tree(tree)
-      tree.inject('') do |out, (name, contents)|
-        out + format_node(name, contents)
-      end
-    end
-
     def escape(input)
       ERB::Util.html_escape(input)
     end
-    
+
     def format_attribute_value(value)
       if value.kind_of?(Array)
         value = value.join(' ')
@@ -101,7 +117,7 @@ module Merk
     end
 
     def content_tag(tag_name, contents, options=nil)
-      '<' + tag_name + tag_options(options) + '>' + contents + '</' + tag_name + '>'
+      '<' + tag_name.to_s + tag_options(options) + '>' + contents + '</' + tag_name.to_s + '>'
     end
   end
 
