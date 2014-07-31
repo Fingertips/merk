@@ -2,6 +2,28 @@
 
 Merk parses and formats a subset of Markdown.
 
+# Usage
+
+    require 'merk'
+    Merk.render(input)
+
+## Overriding rendering
+
+    class Renderer
+      def initialize(node_name)
+      end
+
+      def self.[](node_name)
+        new(node_name)
+      end
+    end
+
+    Merk.render(input, format: Renderer
+      end
+    })
+
+Note that you need to call `format` to render any additional nodes included in the content. The `content_tag` method only escapes attribute values and not the tag content. When you want to escape the content, call `escape`.
+
 # License
 
 Copyright Manfred Stienstra <manfred@fngtps.com>
