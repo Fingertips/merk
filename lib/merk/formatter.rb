@@ -37,17 +37,17 @@ module Merk
         when :heading
           out + content_tag('h2', format(contents))
         when :unordered_list
-          out + content_tag('ul', format(contents))
+          out + content_tag('ul', format(contents).strip)
         when :list_item
           out + content_tag('li', format(contents))
         when :codeblock
-          out + content_tag('pre', content_tag('code', format(contents).rstrip))
+          out + content_tag('pre', content_tag('code', format(contents).strip))
         when :line
           out + escape(contents) + "\n"
         when :blockquote
           out + content_tag('blockquote', format(contents).rstrip)
         when :quoted_line
-          out + escape(contents) + "\n"
+          out + escape(contents)
         when :emphasis
           out + content_tag('em', format(contents))
         when :codespan

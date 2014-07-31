@@ -20,20 +20,25 @@ module Merk
 
     rule(:heading) { str('#') >> whitespace >> text.as(:heading) }
 
-    rule(:blockquote) { (quoted_line >> newline).repeat(1) }
-    rule(:quoted_line) { str('>') >> space >> text.as(:quoted_line) }
+    rule(:blockquote) {
+      (quoted_line >> newline?).repeat(1) |
+      quoted_line
+    }
+    rule(:quoted_line) {
+      str('>') >> whitespace >> text.as(:quoted_line)
+    }
 
     rule(:indent) { space.repeat(4,4) | tab }
     rule(:codeblock) { (codeblock_line >> newline).repeat(1) }
     rule(:codeblock_line) { indent >> text.as(:line) }
 
     rule(:unordered_list) {
-      (unordered_list_item >> newline).repeat(1) >> newline? |
-      unordered_list_item >> newline?
+      (unordered_list_item >> newline?).repeat(1) |
+      unordered_list_item
     }
     rule(:unordered_list_item) {
-      str('*') >> whitespace >> char.repeat(1).as(:list_item) |
-      str('-') >> whitespace >> char.repeat(1).as(:list_item)
+      str('*') >> whitespace >> text.as(:list_item) |
+      str('-') >> whitespace >> text.as(:list_item)
     }
 
     rule(:paragraph) {

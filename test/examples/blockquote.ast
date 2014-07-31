@@ -1,0 +1,6 @@
+[{
+  blockquote: [
+    {quoted_line: "Line 1 with newline", newline: "\n"},
+    {quoted_line: "Line 2 without newline"}
+  ]
+}]

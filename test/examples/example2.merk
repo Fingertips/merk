@@ -6,7 +6,7 @@ Here's some text. Let’s make a list:
 
 # This is a section header
 
-This is paragraph of text *with emphasis* and some `print(\"inline code\")` as well.
+This is paragraph of text *with emphasis* and some `print("inline code")` as well.
 
 > This is a blockquote.
 > And this

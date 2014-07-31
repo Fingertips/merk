@@ -65,39 +65,44 @@ class MiniTest::Unit::TestCase
         html: "<p>#$ something</p>"
       },
       {
-        input: "- Wrong list item\n",
+        input: "- Wrong list item",
         ast: [{ unordered_list: [{list_item: 'Wrong list item'}] }],
         html: "<ul><li>Wrong list item</li></ul>"
       },
       {
         input: "- Wrong list item with a - dash\n",
-        ast: [{unordered_list: [{list_item: "Wrong list item with a - dash"}]}],
+        ast: [{unordered_list: [{list_item: "Wrong list item with a - dash", newline: "\n"}]}],
         html: "<ul><li>Wrong list item with a - dash</li></ul>"
       },
       {
         input: "* List item\n",
-        ast: [{unordered_list: [{list_item: "List item"}]}],
+        ast: [{unordered_list: [{list_item: "List item", newline: "\n"}]}],
         html: "<ul><li>List item</li></ul>"
       },
       {
         input: "* List item with a * star\n",
-        ast: [{unordered_list: [{list_item: "List item with a * star"}]}],
+        ast: [{unordered_list: [{list_item: "List item with a * star", newline: "\n"}]}],
         html: "<ul><li>List item with a * star</li></ul>"
       },
       {
         input: "- Wrong list item one\n- Wrong list item two\n",
-        ast: [{ unordered_list: [{list_item: 'Wrong list item one'}, {list_item: 'Wrong list item two'}] }],
-        html: "<ul><li>Wrong list item one</li><li>Wrong list item two</li></ul>"
+        ast: [{unordered_list: [{list_item: "Wrong list item one", newline: "\n"}, {list_item: "Wrong list item two", newline: "\n"}]}],
+        html: "<ul><li>Wrong list item one</li>\n<li>Wrong list item two</li></ul>"
       },
       {
         input: "* List item one\n* List item two\n",
-        ast: [{ unordered_list: [{list_item: 'List item one'}, {list_item: 'List item two'}] }],
-        html: "<ul><li>List item one</li><li>List item two</li></ul>"
+        ast: [{unordered_list: [{list_item: "List item one", newline: "\n"}, {list_item: "List item two", newline: "\n"}]}],
+        html: "<ul><li>List item one</li>\n<li>List item two</li></ul>"
+      },
+      {
+        input: "* List item one\n* List item two",
+        ast: [{unordered_list: [{list_item: "List item one", newline: "\n"}, {list_item: "List item two"}]}],
+        html: "<ul><li>List item one</li>\n<li>List item two</li></ul>"
       },
       {
         input: "* Red\r\n* Green\r\n* Blue\r\n\r\n",
-        ast: [{unordered_list: [{list_item: "Red"}, {list_item: "Green"}, {list_item: "Blue"}, {newline: "\n"}]}],
-        html: "<ul><li>Red</li><li>Green</li><li>Blue</li>\n</ul>"
+        ast: [{unordered_list: [{list_item: "Red", newline: "\n"}, {list_item: "Green", newline: "\n"}, {list_item: "Blue", newline: "\n"}]}],
+        html: "<ul><li>Red</li>\n<li>Green</li>\n<li>Blue</li></ul>"
       },
       {
         input: "# A Story of two Cities\n\nThey could not win.",
@@ -141,7 +146,7 @@ class MiniTest::Unit::TestCase
       },
       {
         input: "> I love quotes\n> I love quotes\n",
-        ast: [{ blockquote: [{quoted_line: 'I love quotes'}, {quoted_line: 'I love quotes'}] }],
+        ast: [{blockquote: [{quoted_line: "I love quotes", newline: "\n"}, {quoted_line: "I love quotes", newline: "\n"}]}],
         html: "<blockquote>I love quotes\nI love quotes</blockquote>"
       }
     ]
