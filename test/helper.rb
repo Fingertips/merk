@@ -70,9 +70,19 @@ class MiniTest::Unit::TestCase
         html: "<ul><li>Wrong list item</li></ul>"
       },
       {
+        input: "- Wrong list item with a - dash\n",
+        ast: [{unordered_list: [{list_item: "Wrong list item with a - dash"}]}],
+        html: "<ul><li>Wrong list item with a - dash</li></ul>"
+      },
+      {
         input: "* List item\n",
-        ast: [{ unordered_list: [{list_item: 'List item'}] }],
+        ast: [{unordered_list: [{list_item: "List item"}]}],
         html: "<ul><li>List item</li></ul>"
+      },
+      {
+        input: "* List item with a * star\n",
+        ast: [{unordered_list: [{list_item: "List item with a * star"}]}],
+        html: "<ul><li>List item with a * star</li></ul>"
       },
       {
         input: "- Wrong list item one\n- Wrong list item two\n",
@@ -106,8 +116,8 @@ class MiniTest::Unit::TestCase
       },
       {
         input: " * YOLO * ",
-        ast: [{paragraph: [{c: {c: [{c: " "}, {emphasis: " YOLO "}, {c: " "}]}}]}],
-        html: "<p> <em> YOLO </em> </p>"
+        ast: [{paragraph: [{c: {c: [{c: " "}, {c: "*"}, {c: " "}, {c: "Y"}, {c: "O"}, {c: "L"}, {c: "O"}, {c: " "}, {c: "*"}, {c: " "}]}}]}],
+        html: "<p> * YOLO * </p>"
       },
       {
         input: "  a = 1\n",
@@ -133,11 +143,6 @@ class MiniTest::Unit::TestCase
         input: "> I love quotes\n> I love quotes\n",
         ast: [{ blockquote: [{quoted_line: 'I love quotes'}, {quoted_line: 'I love quotes'}] }],
         html: "<blockquote>I love quotes\nI love quotes</blockquote>"
-      },
-      {
-        input: "Here's some text. Let’s make a list:\n\n\n* Red\n* Green\n* Blue\n\n# This is a section header\n\nThis is paragraph of text *with emphasis* and some `print(\"inline code\")` as well.\n\n> This is a blockquote.\n> And this\n\n    This is a code block.\n",
-        ast: [{paragraph: [{c: {c: [{c: "H"}, {c: "e"}, {c: "r"}, {c: "e"}, {c: "'"}, {c: "s"}, {c: " "}, {c: "s"}, {c: "o"}, {c: "m"}, {c: "e"}, {c: " "}, {c: "t"}, {c: "e"}, {c: "x"}, {c: "t"}, {c: "."}, {c: " "}, {c: "L"}, {c: "e"}, {c: "t"}, {c: "’"}, {c: "s"}, {c: " "}, {c: "m"}, {c: "a"}, {c: "k"}, {c: "e"}, {c: " "}, {c: "a"}, {c: " "}, {c: "l"}, {c: "i"}, {c: "s"}, {c: "t"}, {c: ":"}], newline: "\n"}}]}, {unordered_list: [{list_item: "Red"}, {list_item: "Green"}, {list_item: "Blue"}, {newline: "\n"}]}, {heading: "This is a section header"}, {paragraph: [{c: {c: [{c: "T"}, {c: "h"}, {c: "i"}, {c: "s"}, {c: " "}, {c: "i"}, {c: "s"}, {c: " "}, {c: "p"}, {c: "a"}, {c: "r"}, {c: "a"}, {c: "g"}, {c: "r"}, {c: "a"}, {c: "p"}, {c: "h"}, {c: " "}, {c: "o"}, {c: "f"}, {c: " "}, {c: "t"}, {c: "e"}, {c: "x"}, {c: "t"}, {c: " "}, {emphasis: "with emphasis"}, {c: " "}, {c: "a"}, {c: "n"}, {c: "d"}, {c: " "}, {c: "s"}, {c: "o"}, {c: "m"}, {c: "e"}, {c: " "}, {codespan: "print(\"inline code\")"}, {c: " "}, {c: "a"}, {c: "s"}, {c: " "}, {c: "w"}, {c: "e"}, {c: "l"}, {c: "l"}, {c: "."}], newline: "\n"}}]}, {blockquote: [{quoted_line: "This is a blockquote."}, {quoted_line: "And this"}]}, {codeblock: [{line: "This is a code block."}]}],
-        html: "<p>Here's some text. Let’s make a list:\n</p><ul><li>Red</li><li>Green</li><li>Blue</li>\n</ul><h2>This is a section header</h2><p>This is paragraph of text <em>with emphasis</em> and some <code>print(\"inline code\")</code> as well.\n</p><blockquote>This is a blockquote.\nAnd this</blockquote><pre><code>This is a code block.</code></pre>"
       }
     ]
   end

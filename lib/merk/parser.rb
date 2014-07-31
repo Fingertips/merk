@@ -28,11 +28,12 @@ module Merk
     rule(:codeblock_line) { indent >> text.as(:line) }
 
     rule(:unordered_list) {
-      (unordered_list_item >> newline).repeat(1) >> newline?
+      (unordered_list_item >> newline).repeat(1) >> newline? |
+      unordered_list_item >> newline?
     }
     rule(:unordered_list_item) {
-      str('*') >> space >> match['^\n\*'].repeat(1).as(:list_item) |
-      str('-') >> space >> match['^\n\-'].repeat(1).as(:list_item)
+      str('*') >> whitespace >> char.repeat(1).as(:list_item) |
+      str('-') >> whitespace >> char.repeat(1).as(:list_item)
     }
 
     rule(:paragraph) {
@@ -47,8 +48,10 @@ module Merk
       char.as(:c)
     }
 
-    rule(:emphasis) { str('*') >> match['^\n\*'].repeat(1).as(:emphasis) >> str('*') }
+    rule(:emphasis) { str('*') >> emphasis_body.as(:emphasis) >> str('*') }
     rule(:codespan) { str('`') >> match['^\n\`'].repeat(1).as(:codespan) >> str('`') }
+
+    rule(:emphasis_body) { match['^\s\ '] >> match['^\n\*'].repeat(1) }
 
     rule(:char) { match['^\n'] }
     rule(:text) { char.repeat(1) }
@@ -57,7 +60,7 @@ module Merk
     rule(:newline?) { newline.as(:newline) | any.absent? }
 
     rule(:tab) { match['\t'] }
-    rule(:space) { match[" "] }
+    rule(:space) { str(' ') }
     rule(:whitespace) { space.repeat(1) }
 
     def parse(text)
